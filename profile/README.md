@@ -1,12 +1,12 @@
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Quittio/quittio/master/art/banner-dark.svg">
-    <img src="https://raw.githubusercontent.com/Quittio/quittio/master/art/banner-light.svg" alt="Quittio: Invoices, settled. E-invoicing for Laravel" width="1280">
+    <img src="https://raw.githubusercontent.com/Quittio/quittio/master/art/banner-light.svg" alt="Quittio: Invoices, settled. E-invoicing for PHP and Laravel" width="1280">
   </picture>
 </p>
 
 <p align="center">
-  <b>E-invoicing for Laravel.</b> Create, validate, read and render electronic invoices based on EN 16931:<br>
+  <b>E-invoicing for PHP and Laravel.</b> Create, validate, read and render electronic invoices based on EN 16931:<br>
   ZUGFeRD/Factur-X, XRechnung, UBL and Peppol BIS from one data model.
 </p>
 
