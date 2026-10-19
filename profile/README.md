@@ -11,6 +11,7 @@
 </p>
 
 <p align="center">
+  <a href="https://quittio.dev"><b>Website</b></a> ·
   <a href="https://docs.quittio.dev"><b>Documentation</b></a> ·
   <a href="https://docs.quittio.dev/getting-started.html">Getting started</a> ·
   <a href="https://github.com/Quittio/quittio">Main repository</a> ·
@@ -19,31 +20,56 @@
 
 ---
 
+- **PHP:** the core runs in any PHP 8.3 application, with Symfony, another framework or none.
+- **Laravel:** the integration adds a facade, configuration, Blade templates, queued rendering, mail attachments and Artisan commands.
+
 Germany is the first market. Everything country-specific (VAT rates, legal texts, XRechnung rules) lives in country packs, so the core stays country-neutral.
 
 ```bash
+# PHP, with any framework or none
+composer require quittio/core quittio/country-de
+
+# Laravel
 composer require quittio/quittio
 php artisan quittio:install
 ```
 
 ```php
+// PHP
+$quittio = Quittio::create([], [new CountryDE]);
+
+$invoice = InvoiceBuilder::make()
+    ->number('RE-2026-0042')
+    ->deliveryDate('2026-09-30')
+    ->seller(Party::make('Muster GmbH')->vatId('DE123456789')->address('Hauptstraße 1', '12345', 'Musterstadt', 'DE'))
+    ->buyer(Party::make('Kunde AG')->vatId('DE987654321')->address('Bahnhofstraße 5', '54321', 'Beispielstadt', 'DE'))
+    ->line('Web development', netPrice: '95.00', quantity: 24, unit: UnitCode::Hour, vat: VatPreset::Standard)
+    ->dueInDays(14)
+    ->build();
+
+$quittio->make($invoice)->render()->save(__DIR__.'/invoices/RE-2026-0042.pdf');   // ZUGFeRD: PDF/A-3 with embedded XML
+
+// Laravel: seller and bank account from config/quittio.php
 Quittio::invoice()
     ->number('RE-2026-0042')
-    ->buyer(Party::make('Kunde AG')->vatId('DE987654321'))
+    ->deliveryDate('2026-09-30')
+    ->buyer(Party::make('Kunde AG')->vatId('DE987654321')->address('Bahnhofstraße 5', '54321', 'Beispielstadt', 'DE'))
     ->line('Web development', netPrice: '95.00', quantity: 24, unit: UnitCode::Hour)
     ->dueInDays(14)
-    ->render()        // ZUGFeRD: PDF/A-3 with embedded XML
+    ->render()
     ->save('invoices');
 ```
+
+The complete examples with imports are in the [main repository](https://github.com/Quittio/quittio#quick-example) and the [documentation](https://docs.quittio.dev/examples.html).
 
 ### Packages
 
 | Package | Purpose |
 |---|---|
-| [**quittio**](https://github.com/Quittio/quittio) | Everything in one package: core, Laravel integration and the country pack Germany. Development, issues and pull requests happen here. |
+| [**quittio**](https://github.com/Quittio/quittio) | Everything in one package for Laravel applications: core, Laravel integration and the country pack Germany. Development, issues and pull requests happen here. |
 | [core](https://github.com/Quittio/core) | Country-neutral core: EN 16931 data model, calculation, CII/UBL writers and readers, ZUGFeRD/Factur-X PDF/A-3, validation. Usable without Laravel. |
 | [laravel](https://github.com/Quittio/laravel) | Laravel integration: facade, configuration, Blade templates, Artisan commands, testing helpers. |
-| [country-de](https://github.com/Quittio/country-de) | Country pack for Germany: UStG mandatory fields, tax presets, XRechnung profiles and BR-DE rules, DIN 5008 layouts. |
+| [country-de](https://github.com/Quittio/country-de) | Country pack for Germany: UStG mandatory fields, tax presets, XRechnung profiles and BR-DE rules, DIN 5008 layouts. Usable without Laravel. |
 
 `core`, `laravel` and `country-de` are read-only splits of the [main repository](https://github.com/Quittio/quittio), updated automatically on every push and tag. Please open issues and pull requests there.
 
@@ -52,13 +78,15 @@ Quittio::invoice()
 | Format | Content |
 |---|---|
 | ZUGFeRD / Factur-X | PDF/A-3 with embedded CII XML, profiles MINIMUM to EXTENDED and XRECHNUNG |
-| XRechnung 3.0 | CII or UBL as plain XML |
+| XRechnung 3.0 | CII or UBL as plain XML, also the XRechnung extension and CVD |
 | CII, UBL 2.1 | Plain XML in any profile |
 | Peppol BIS Billing 3.0 | UBL |
 | PDF, HTML, JSON | PDF without XML, HTML preview, normalised data model |
 
 ### Status
 
-Version 0.1.0, the first release. APIs may still change until 1.0.0, and the legal wording of the country pack Germany is under review by a tax adviser. A commercial Managed layer (`quittio/managed`: issuer profiles, gapless numbering, archive, cancellations, mail delivery, audit log) is planned and not released yet.
+Version 0.6.0. APIs may still change until 1.0.0 ([changelog](https://github.com/Quittio/quittio/blob/master/CHANGELOG.md), [roadmap](https://quittio.dev/en/roadmap)). The legal wording, rules and defaults of the country pack Germany were reviewed against the UStG, the UStDV, the UStAE and the BMF letters on e-invoicing and confirmed by a tax adviser in October 2026 ([legal review](https://github.com/Quittio/quittio#legal-review)). A commercial Managed layer for Laravel (`quittio/managed`: issuer profiles, gapless numbering, archive, cancellations, mail delivery, audit log) is planned and not released yet ([more](https://quittio.dev/en/managed)).
 
-Requires PHP 8.3+ and Laravel 13. The open source packages are MIT-licensed. Security issues: please [report them privately](https://github.com/Quittio/quittio/security/advisories/new).
+Requires PHP 8.3+; Laravel 13 only for the Laravel integration. The open source packages are MIT-licensed. Security issues: please [report them privately](https://github.com/Quittio/quittio/security/advisories/new).
+
+<sub>Quittio is software, not tax or legal advice. The review lowers the risk of errors but does not exclude them; whether an invoice meets the legal requirements in the individual case remains the responsibility of the business that issues it. See the [disclaimer](https://github.com/Quittio/quittio#disclaimer).</sub>
