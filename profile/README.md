@@ -23,7 +23,7 @@
 - **PHP:** the core runs in any PHP 8.3 application, with Symfony, another framework or none.
 - **Laravel:** the integration adds a facade, configuration, Blade templates, queued rendering, mail attachments and Artisan commands.
 
-Germany is the first market. Everything country-specific (VAT rates, legal texts, XRechnung rules) lives in country packs, so the core stays country-neutral.
+Everything country-specific (VAT rates, legal texts, national rules) lives in country packs, so the core stays country-neutral. Germany is the first market; packs for Austria, Belgium, Switzerland and France are available as well.
 
 ```bash
 # PHP, with any framework or none
@@ -70,8 +70,12 @@ The complete examples with imports are in the [main repository](https://github.c
 | [core](https://github.com/Quittio/core) | Country-neutral core: EN 16931 data model, calculation, CII/UBL writers and readers, ZUGFeRD/Factur-X PDF/A-3, validation. Usable without Laravel. |
 | [laravel](https://github.com/Quittio/laravel) | Laravel integration: facade, configuration, Blade templates, Artisan commands, testing helpers. |
 | [country-de](https://github.com/Quittio/country-de) | Country pack for Germany: UStG mandatory fields, tax presets, XRechnung profiles and BR-DE rules, DIN 5008 layouts. Usable without Laravel. |
+| [country-at](https://github.com/Quittio/country-at) | Country pack for Austria: UStG 1994 mandatory fields, tax presets, CIUS-AT profiles, ebInterface, default interest. Not reviewed by a tax adviser yet. |
+| [country-be](https://github.com/Quittio/country-be) | Country pack for Belgium: mandatory fields of Royal Decree No. 1, tax presets, Peppol BIS, language regions, default interest. Not reviewed by a tax adviser yet. |
+| [country-ch](https://github.com/Quittio/country-ch) | Country pack for Switzerland: MWSTG requirements, tax presets, QR bill, rounding to 5 Rappen. Not reviewed by a tax adviser yet. |
+| [country-fr](https://github.com/Quittio/country-fr) | Country pack for France: mentions of the CGI (CIBS from 2027) and the Code de commerce, the e-invoicing reform, SIREN, late payment penalties. Not reviewed by a tax adviser yet. |
 
-`core`, `laravel` and `country-de` are read-only splits of the [main repository](https://github.com/Quittio/quittio), updated automatically on every push and tag. Please open issues and pull requests there.
+`core`, `laravel` and the `country-*` packs are read-only splits of the [main repository](https://github.com/Quittio/quittio), updated automatically on every push and tag. Please open issues and pull requests there.
 
 ### Formats
 
@@ -85,7 +89,7 @@ The complete examples with imports are in the [main repository](https://github.c
 
 ### Status
 
-Version 0.6.0. APIs may still change until 1.0.0 ([changelog](https://github.com/Quittio/quittio/blob/master/CHANGELOG.md), [roadmap](https://quittio.dev/en/roadmap)). The legal wording, rules and defaults of the country pack Germany were reviewed against the UStG, the UStDV, the UStAE and the BMF letters on e-invoicing and confirmed by a tax adviser in October 2026 ([legal review](https://github.com/Quittio/quittio#legal-review)). A commercial Managed layer for Laravel (`quittio/managed`: issuer profiles, gapless numbering, archive, cancellations, mail delivery, audit log) is planned and not released yet ([more](https://quittio.dev/en/managed)).
+Version 0.7.0. APIs may still change until 1.0.0 ([changelog](https://github.com/Quittio/quittio/blob/master/CHANGELOG.md), [roadmap](https://quittio.dev/en/roadmap)). The legal wording, rules and defaults of the country pack Germany were reviewed against the UStG, the UStDV, the UStAE and the BMF letters on e-invoicing and confirmed by a tax adviser in October 2026 ([legal review](https://github.com/Quittio/quittio#legal-review)). The packs for Austria, Belgium, Switzerland and France follow the law and the official sources of October 2026, but have not been reviewed by a tax adviser yet ([documentation](https://docs.quittio.dev/country-packs.html#other-countries)). A commercial Managed layer for Laravel (`quittio/managed`: issuer profiles, gapless numbering, archive, cancellations, mail delivery, audit log) is planned and not released yet ([more](https://quittio.dev/en/managed)).
 
 Requires PHP 8.3+; Laravel 13 only for the Laravel integration. The open source packages are MIT-licensed. Security issues: please [report them privately](https://github.com/Quittio/quittio/security/advisories/new).
 
